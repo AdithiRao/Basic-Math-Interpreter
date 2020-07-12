@@ -34,10 +34,21 @@ class Lexer:
                 yield Token(TokenType.MINUS)
             elif self.currChar == "/":
                 self.getNextChar()
-                yield Token(TokenType.DIVIDE)
+                if self.currChar == "/":
+                    self.getNextChar()
+                    yield Token(TokenType.INTDIVIDE)
+                else:
+                    yield Token(TokenType.DIVIDE)
             elif self.currChar == "*":
                 self.getNextChar()
-                yield Token(TokenType.MULTIPLY)
+                if self.currChar == "*":
+                    self.getNextChar()
+                    yield Token(TokenType.EXPONENT)
+                else:
+                    yield Token(TokenType.MULTIPLY)
+            elif self.currChar == "%":
+                self.getNextChar()
+                yield Token(TokenType.MOD)
             elif self.currChar == "(":
                 self.getNextChar()
                 yield Token(TokenType.LPAREN)

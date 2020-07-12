@@ -40,6 +40,31 @@ class Divide:
         return f"({self.el1}/{self.el2})"
 
 @dataclass
+class Mod:
+    el1: any
+    el2: any
+
+    def __repr__(self):
+        return f"({self.el1}%{self.el2})"
+
+@dataclass
+class IntegerDivide:
+    el1: any
+    el2: any
+
+    def __repr__(self):
+        return f"({self.el1}//{self.el2})"
+
+@dataclass
+class Exponent:
+    el1: any
+    el2: any
+
+    def __repr__(self):
+        return f"({self.el1}^{self.el2})"
+
+
+@dataclass
 class Plus:
     exp: any
 

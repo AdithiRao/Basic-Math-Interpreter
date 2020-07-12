@@ -11,19 +11,29 @@ class NumberValue:
 class Interpreter:
     def evaluate(self, expr):
         if type(expr) == Number:
-            return Number(expr.value)
+            return NumberValue(expr.value)
         elif type(expr) == Add:
-            Number((self.evaluate(expr.el1)).value + (self.evaluate(expr.el2)).value)
+            return NumberValue((self.evaluate(expr.el1)).value + (self.evaluate(expr.el2)).value)
         elif type(expr) == Subtract:
-            Number((self.evaluate(expr.el1)).value - (self.evaluate(expr.el2)).value)
+            return NumberValue((self.evaluate(expr.el1)).value - (self.evaluate(expr.el2)).value)
         elif type(expr) == Multiply:
-            Number((self.evaluate(expr.el1)).value * (self.evaluate(expr.el2)).value)
+            return NumberValue((self.evaluate(expr.el1)).value * (self.evaluate(expr.el2)).value)
         elif type(expr) == Divide:
             try:
-                Number((self.evaluate(expr.el1)).value / (self.evaluate(expr.el2)).value)
+                return NumberValue((self.evaluate(expr.el1)).value / (self.evaluate(expr.el2)).value)
             except:
                 raise Exception("Error: Cannot divide by 0")
+        elif type(expr) == Mod:
+            print("here")
+            return NumberValue((self.evaluate(expr.el1)).value % (self.evaluate(expr.el2)).value)
+        elif type(expr) == IntegerDivide:
+            try:
+                return NumberValue((self.evaluate(expr.el1)).value // (self.evaluate(expr.el2)).value)
+            except:
+                raise Exception("Error: Cannot divide by 0")
+        elif type(expr) == Exponent:
+            return NumberValue(self.evaluate(expr.el1).value ** self.evaluate(expr.el2).value)
         elif type(expr) == Plus:
-            Number(self.evaluate())
+            return NumberValue(self.evaluate())
         elif type(expr) == Minus:
-            Number(-(self.evaluate(expr.exp)).value)
+            return NumberValue(-(self.evaluate(expr.exp)).value)

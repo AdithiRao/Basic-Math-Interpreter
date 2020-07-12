@@ -39,18 +39,36 @@ class Parser:
         return result
 
     def multiplyOrDivide(self):
-        result = self.base()
+        result = self.exponentiate()
 
-        while self.currToken and self.currToken.type in (TokenType.MULTIPLY, TokenType.DIVIDE):
+        while self.currToken and self.currToken.type in \
+        (TokenType.MULTIPLY, TokenType.DIVIDE, TokenType.INTDIVIDE, TokenType.MOD):
             if self.currToken.type == TokenType.MULTIPLY:
                 self.getNextToken() #advance past the plus token
-                number2 = self.base()
+                number2 = self.exponentiate()
                 result = Multiply(result, number2)
-            else:
+            elif self.currToken.type == TokenType.DIVIDE:
                 self.getNextToken() #advance past the minus token
-                number2 = self.base()
+                number2 = self.exponentiate()
                 result = Divide(result, number2)
+            elif self.currToken.type == TokenType.INTDIVIDE:
+                self.getNextToken() #advance past the int divide token
+                number2 = self.exponentiate()
+                result = IntegerDivide(result, number2)
+            elif self.currToken.type == TokenType.MOD:
+                self.getNextToken() #advance past the int divide token
+                number2 = self.exponentiate()
+                result = Mod(result, number2)
         return result
+
+    def exponentiate(self):
+        result = self.base()
+        while self.currToken and self.currToken.type == TokenType.EXPONENT:
+            self.getNextToken()
+            number2 = self.base()
+            result = Exponent(result, number2)
+        return result
+
 
     def base(self):
         token = self.currToken
