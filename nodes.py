@@ -1,21 +1,21 @@
 from dataclasses import dataclass
 
 @dataclass
-class Int:
+class IntNode:
     value: int
 
     def __repr__(self):
         return f"{self.value}"
 
 @dataclass
-class NumberFloat:
+class FloatNode:
     value: float
 
     def __repr__(self):
         return f"{self.value}"
 
 @dataclass
-class Add:
+class AddNode:
     el1: any
     el2: any
 
@@ -23,7 +23,7 @@ class Add:
         return f"({self.el1}+{self.el2})"
 
 @dataclass
-class Subtract:
+class SubtractNode:
     el1: any
     el2: any
 
@@ -31,7 +31,7 @@ class Subtract:
         return f"({self.el1}-{self.el2})"
 
 @dataclass
-class Multiply:
+class MultiplyNode:
     el1: any
     el2: any
 
@@ -39,7 +39,7 @@ class Multiply:
         return f"({self.el1}*{self.el2})"
 
 @dataclass
-class Divide:
+class DivideNode:
     el1: any
     el2: any
 
@@ -47,7 +47,7 @@ class Divide:
         return f"({self.el1}/{self.el2})"
 
 @dataclass
-class Mod:
+class ModNode:
     el1: any
     el2: any
 
@@ -55,7 +55,7 @@ class Mod:
         return f"({self.el1}%{self.el2})"
 
 @dataclass
-class IntegerDivide:
+class IntegerDivideNode:
     el1: any
     el2: any
 
@@ -63,7 +63,7 @@ class IntegerDivide:
         return f"({self.el1}//{self.el2})"
 
 @dataclass
-class Exponent:
+class ExponentNode:
     el1: any
     el2: any
 
@@ -72,14 +72,14 @@ class Exponent:
 
 
 @dataclass
-class Plus:
+class PlusNode:
     exp: any
 
     def __repr__(self):
         return f"(+{self.exp})"
 
 @dataclass
-class Negate:
+class NegateNode:
     exp: any
 
     def __repr__(self):

@@ -1,39 +1,44 @@
+from enum import Enum
 from dataclasses import dataclass
-from components import *
+from nodes import *
+
+class NumberType(Enum):
+    float
+    int
 
 @dataclass
 class NumberValue:
-    value: float
+    value: NumberType
 
     def __repr__(self):
         return f"{self.value}"
 
 class Interpreter:
     def evaluate(self, expr):
-        if type(expr) == Number:
+        if type(expr) == FloatNode or type(expr) == IntNode:
             return NumberValue(expr.value)
-        elif type(expr) == Add:
+        elif type(expr) == AddNode:
             return NumberValue((self.evaluate(expr.el1)).value + (self.evaluate(expr.el2)).value)
-        elif type(expr) == Subtract:
+        elif type(expr) == SubtractNode:
             return NumberValue((self.evaluate(expr.el1)).value - (self.evaluate(expr.el2)).value)
-        elif type(expr) == Multiply:
+        elif type(expr) == MultiplyNode:
             return NumberValue((self.evaluate(expr.el1)).value * (self.evaluate(expr.el2)).value)
-        elif type(expr) == Divide:
+        elif type(expr) == DivideNode:
             try:
                 return NumberValue((self.evaluate(expr.el1)).value / (self.evaluate(expr.el2)).value)
             except:
                 raise Exception("Error: Cannot divide by 0")
-        elif type(expr) == Mod:
+        elif type(expr) == ModNode:
             print("here")
             return NumberValue((self.evaluate(expr.el1)).value % (self.evaluate(expr.el2)).value)
-        elif type(expr) == IntegerDivide:
+        elif type(expr) == IntegerDivideNode:
             try:
                 return NumberValue((self.evaluate(expr.el1)).value // (self.evaluate(expr.el2)).value)
             except:
                 raise Exception("Error: Cannot divide by 0")
-        elif type(expr) == Exponent:
+        elif type(expr) == ExponentNode:
             return NumberValue(self.evaluate(expr.el1).value ** self.evaluate(expr.el2).value)
-        elif type(expr) == Plus:
-            return NumberValue(self.evaluate())
-        elif type(expr) == Minus:
+        elif type(expr) == PlusNode:
+            return NumberValue(self.evaluate(expr.exp).value)
+        elif type(expr) == NegateNode:
             return NumberValue(-(self.evaluate(expr.exp)).value)

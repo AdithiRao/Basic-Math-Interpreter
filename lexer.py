@@ -24,7 +24,9 @@ class Lexer:
                 self.getNextChar()
             elif self.currChar in DIGITS or self.currChar == ".":
                 num = self.generateNumber()
-                if num:
+                print(num)
+                if num != None:
+                    print("done")
                     yield num
             elif self.currChar == "+":
                 self.getNextChar()
@@ -62,8 +64,10 @@ class Lexer:
     def generateNumber(self):
         numberString = ""
         numDecimalPoints = 0
+        floatNum = False
         while self.currChar and self.currChar in DIGITS or (self.currChar == "." and numDecimalPoints==0):
             if self.currChar == ".":
+                floatNum = True
                 numDecimalPoints+=1
                 numberString += "."
             else:
@@ -75,5 +79,7 @@ class Lexer:
             numberString = "." + numberString
         if numberString.endswith('.'):
             numberString += '0'
-
-        return Token(TokenType.NUMBER, float(numberString))
+        if floatNum:
+            return Token(TokenType.FLOAT, float(numberString))
+        else:
+            return Token(TokenType.INT, int(numberString))

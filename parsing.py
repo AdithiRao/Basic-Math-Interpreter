@@ -1,5 +1,5 @@
 from tokens import TokenType
-from components import *
+from nodes import *
 
 class Parser:
     def __init__(self, tokens):
@@ -19,6 +19,7 @@ class Parser:
         if self.currToken == None:
             return None
 
+        # go by order of operations
         result = self.plusOrMinus()
 
         if self.currToken != None:
@@ -32,10 +33,10 @@ class Parser:
         while self.currToken and self.currToken.type in (TokenType.PLUS, TokenType.MINUS):
             if self.currToken.type == TokenType.PLUS:
                 self.getNextToken() #advance past the plus token
-                result = Add(result, self.multiplyOrDivide())
+                result = AddNode(result, self.multiplyOrDivide())
             else:
                 self.getNextToken() #advance past the minus token
-                result = Subtract(result, self.multiplyOrDivide())
+                result = SubtractNode(result, self.multiplyOrDivide())
         return result
 
     def multiplyOrDivide(self):
@@ -46,19 +47,19 @@ class Parser:
             if self.currToken.type == TokenType.MULTIPLY:
                 self.getNextToken() #advance past the plus token
                 number2 = self.exponentiate()
-                result = Multiply(result, number2)
+                result = MultiplyNode(result, number2)
             elif self.currToken.type == TokenType.DIVIDE:
                 self.getNextToken() #advance past the minus token
                 number2 = self.exponentiate()
-                result = Divide(result, number2)
+                result = DivideNode(result, number2)
             elif self.currToken.type == TokenType.INTDIVIDE:
                 self.getNextToken() #advance past the int divide token
                 number2 = self.exponentiate()
-                result = IntegerDivide(result, number2)
+                result = IntegerDivideNode(result, number2)
             elif self.currToken.type == TokenType.MOD:
                 self.getNextToken() #advance past the int divide token
                 number2 = self.exponentiate()
-                result = Mod(result, number2)
+                result = ModNode(result, number2)
         return result
 
     def exponentiate(self):
@@ -66,7 +67,7 @@ class Parser:
         while self.currToken and self.currToken.type == TokenType.EXPONENT:
             self.getNextToken()
             number2 = self.base()
-            result = Exponent(result, number2)
+            result = ExponentNode(result, number2)
         return result
 
 
@@ -79,13 +80,16 @@ class Parser:
                 raise Exception("Unmatched left parenthesis")
             self.getNextToken()
             return result
-        elif token.type == TokenType.NUMBER:
+        elif token.type == TokenType.FLOAT:
             self.getNextToken()
-            return Number(token.value)
+            return FloatNode(token.value)
+        elif token.type == TokenType.INT:
+            self.getNextToken()
+            return IntNode(token.value)
         elif token.type == TokenType.PLUS:
             self.getNextToken()
-            return Plus(self.base())
+            return PlusNode(self.base())
         elif token.type == TokenType.MINUS:
             self.getNextToken()
-            return Negate(self.base())
+            return NegateNode(self.base())
         raise Exception('Invalid character entered')
